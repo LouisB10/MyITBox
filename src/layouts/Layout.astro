@@ -1,22 +1,104 @@
-<!doctype html>
-<html lang="en">
+---
+import Header from '../components/common/Header.astro';
+import Footer from '../components/common/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	description: string;
+	image?: string;
+	canonicalURL?: string;
+}
+
+const {
+	title,
+	description,
+	image = '/images/myitbox-social.jpg',
+	canonicalURL = Astro.url,
+} = Astro.props;
+
+// Détection automatique de la langue depuis l'URL
+const currentPath = Astro.url.pathname;
+const currentLang = currentPath.startsWith('/en') ? 'en' : 'fr';
+
+// Traductions des métadonnées
+const metadata = {
+  fr: {
+    title: "MyITBox - Société de conseil spécialisée en informatique supply chain",
+    description: "Depuis 2012, MyITBox accompagne ses clients dans la réussite de leurs projets Supply Chain. Expertise en management de transition et conseil informatique."
+  },
+  en: {
+    title: "MyITBox - IT Supply Chain Consulting Company",
+    description: "Since 2012, MyITBox has been supporting clients in successful Supply Chain projects. Expertise in transition management and IT consulting."
+  }
+};
+---
+
+<!DOCTYPE html>
+<html lang={currentLang} class="scroll-smooth">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
+		
+		<!-- SEO -->
+		<title>{title || metadata[currentLang].title}</title>
+		<meta name="description" content={description || metadata[currentLang].description} />
+		<link rel="canonical" href={canonicalURL} />
+		<meta name="robots" content="index, follow">
+		
+		<!-- Open Graph / Social -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.url} />
+		<meta property="og:title" content={title || metadata[currentLang].title} />
+		<meta property="og:description" content={description || metadata[currentLang].description} />
+		<meta property="og:image" content={new URL(image, Astro.url)} />
+		
+		<!-- Internationalisation -->
+		<link rel="alternate" hreflang="fr" href="https://myitbox.fr/" />
+		<link rel="alternate" hreflang="en" href="https://myitbox.fr/en/" />
+		<link rel="alternate" hreflang="x-default" href="https://myitbox.fr/" />
+		<meta property="og:locale" content={currentLang === 'fr' ? 'fr_FR' : 'en_GB'} />
+		
+		<!-- Performance & Sécurité -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="theme-color" content="#ffffff">
+		
+		<!-- Favicon -->
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		
+		<!-- Éviter le FOIT -->
+		<style is:inline>
+			html {
+				visibility: visible;
+				opacity: 1;
+			}
+		</style>
 	</head>
-	<body>
-		<slot />
+	<body class="min-h-screen bg-white dark:bg-gray-900 flex flex-col">
+		<a href="#main-content" class="sr-only focus:not-sr-only">
+			{currentLang === 'fr' ? 'Aller au contenu principal' : 'Skip to main content'}
+		</a>
+		
+		<Header />
+		
+		<main id="main-content" class="flex-grow">
+			<slot />
+		</main>
+
+		<Footer />
+		
+		<!-- Script pour le mode sombre -->
+		<script is:inline>
+			// Vérifier les préférences système et localStorage
+			const darkModePreference = localStorage.getItem('darkMode') || 'system';
+			const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+			
+			if (darkModePreference === 'dark' || (darkModePreference === 'system' && systemPrefersDark)) {
+				document.documentElement.classList.add('dark');
+			}
+		</script>
 	</body>
 </html>
-
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>

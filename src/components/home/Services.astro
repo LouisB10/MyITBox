@@ -1,0 +1,48 @@
+---
+const services = [
+  {
+    icon: '/img/icons/maintenance.svg',
+    title: 'Maintenance Informatique',
+    description: 'Diagnostic, réparation et optimisation de vos systèmes informatiques.'
+  },
+  {
+    icon: '/img/icons/network.svg', 
+    title: 'Réseau & Connectivité',
+    description: 'Installation et configuration de réseaux sécurisés et performants.'
+  },
+  {
+    icon: '/img/icons/cloud.svg',
+    title: 'Solutions Cloud',
+    description: 'Migration, hébergement et gestion de vos infrastructures cloud.'
+  },
+  {
+    icon: '/img/icons/security.svg',
+    title: 'Cybersécurité',
+    description: 'Protection contre les menaces, audit et conseils en sécurité informatique.'
+  }
+];
+---
+
+<section class="py-16 px-4 bg-gray-50">
+  <div class="container mx-auto">
+    <h2 class="text-3xl font-bold text-center mb-12">
+      Nos <span class="text-[#00799e]">Services</span>
+    </h2>
+    
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+      {services.map((service) => (
+        <div class="bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 text-center">
+          <div class="flex justify-center mb-4">
+            <img 
+              src={service.icon} 
+              alt={service.title} 
+              class="h-16 w-16 text-[#00799e]"
+            />
+          </div>
+          <h3 class="text-xl font-semibold mb-3 text-gray-800">{service.title}</h3>
+          <p class="text-gray-600">{service.description}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

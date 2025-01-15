@@ -1,0 +1,29 @@
+/* Import des styles Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Styles globaux personnalisés */
+@layer base {
+  /* Optimisations de police */
+  html {
+    font-display: optional;
+  }
+  
+  /* Amélioration du Cumulative Layout Shift (CLS) */
+  img, picture, video {
+    @apply max-w-full h-auto;
+  }
+}
+
+/* Styles personnalisés qui ne peuvent pas être gérés par Tailwind */
+@layer components {
+  /* Exemple : style de scrollbar personnalisé */
+  ::-webkit-scrollbar {
+    @apply w-2 bg-gray-100;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-[#00799e] rounded-full;
+  }
+} 
